@@ -1,0 +1,29 @@
+{
+  "project": "Libya Digital Tourism Atlas 2026",
+  "generated_at": "2026-06-07T13:30:26.946184",
+  "source_file": "Libya_Tourism_Atlas_Central_Database_2026.geojson",
+  "statistics": {
+    "total": 6794,
+    "missing_photos": 6794,
+    "missing_english": 6794,
+    "missing_mun": 6421,
+    "internal_only": 6311,
+    "low_conf": 6311
+  },
+  "fields_required_for_editing": [
+    "Atlas_ID",
+    "Arabic_Name",
+    "English_Name",
+    "Main_Category",
+    "Sub_Category",
+    "Municipality",
+    "Tourism_Region",
+    "Short_Description",
+    "Data_Source",
+    "Confidence_Level",
+    "Publish_Status",
+    "Photos",
+    "Verification_Notes",
+    "Last_Update"
+  ]
+}

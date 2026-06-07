@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>أطلس ليبيا السياحي الرقمي 2026 | محرر النسخة التجريبية</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logoMark">LDTA</div>
+      <div>
+        <h1>أطلس ليبيا السياحي الرقمي 2026</h1>
+        <p>مركز المعلومات والتوثيق السياحي | وزارة السياحة والصناعات التقليدية</p>
+      </div>
+    </div>
+    <div class="actions">
+      <label class="fileBtn">
+        استيراد GeoJSON
+        <input type="file" id="geojsonFile" accept=".geojson,.json" />
+      </label>
+      <label class="fileBtn alt">
+        استيراد تعديلات
+        <input type="file" id="patchFile" accept=".json" />
+      </label>
+      <button id="exportGeoJSON">تصدير GeoJSON محدث</button>
+      <button id="exportPatches">تصدير التعديلات فقط</button>
+      <button id="exportCSV">تصدير CSV للتدقيق</button>
+      <button id="resetEdits" class="danger">مسح التعديلات المحلية</button>
+    </div>
+  </header>
+
+  <section class="kpi-grid">
+    <div class="kpi"><span id="kpiTotal">0</span><small>إجمالي النقاط</small></div>
+    <div class="kpi warn"><span id="kpiMissingDescription">0</span><small>وصف يحتاج استكمال</small></div>
+    <div class="kpi warn"><span id="kpiMissingPhotos">0</span><small>صور ناقصة</small></div>
+    <div class="kpi warn"><span id="kpiMissingEnglish">0</span><small>اسم إنجليزي ناقص</small></div>
+    <div class="kpi"><span id="kpiLocalEdits">0</span><small>تعديلات محفوظة محلياً</small></div>
+  </section>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="panel">
+        <h2>أدوات الفرز والتدقيق</h2>
+        <label>بحث عام</label>
+        <input id="searchInput" placeholder="اسم الموقع، البلدية، التصنيف..." />
+        <div class="two">
+          <div>
+            <label>المحور</label>
+            <select id="axisFilter"><option value="">كل المحاور</option></select>
+          </div>
+          <div>
+            <label>حالة النشر</label>
+            <select id="publishFilter"><option value="">كل الحالات</option></select>
+          </div>
+        </div>
+        <label class="checkLine"><input type="checkbox" id="missingOnly" /> عرض النقاط التي تحتاج استكمال فقط</label>
+        <label class="checkLine"><input type="checkbox" id="editedOnly" /> عرض النقاط المعدلة محلياً فقط</label>
+        <button id="applyFilters" class="primary">تطبيق الفرز</button>
+      </div>
+
+      <div class="panel listPanel">
+        <h2>قائمة المواقع</h2>
+        <div id="recordList" class="recordList"></div>
+      </div>
+    </aside>
+
+    <section class="mapPanel">
+      <div id="map"></div>
+    </section>
+
+    <aside class="editor">
+      <div class="panel">
+        <h2>بطاقة الموقع وإدخال البيانات الناقصة</h2>
+        <p id="selectedHint" class="muted">اختر نقطة من الخريطة أو من القائمة لبدء التحرير.</p>
+
+        <form id="editForm" class="hidden">
+          <div class="readonly">
+            <b>Atlas_ID:</b> <span id="atlasIdView"></span>
+          </div>
+          <label>اسم الموقع بالعربية</label>
+          <input name="Arabic_Name" />
+
+          <label>اسم الموقع بالإنجليزية</label>
+          <input name="English_Name" placeholder="English name for public map" />
+
+          <div class="two">
+            <div>
+              <label>المحور الرئيسي</label>
+              <input name="Main_Category" />
+            </div>
+            <div>
+              <label>التصنيف الفرعي</label>
+              <input name="Sub_Category" />
+            </div>
+          </div>
+
+          <div class="two">
+            <div>
+              <label>البلدية</label>
+              <input name="Municipality" />
+            </div>
+            <div>
+              <label>المنطقة السياحية</label>
+              <input name="Tourism_Region" />
+            </div>
+          </div>
+
+          <label>الوصف السياحي المختصر</label>
+          <textarea name="Short_Description" rows="4" placeholder="وصف مهني مختصر للموقع مناسب للنشر العام"></textarea>
+
+          <label>روابط الصور الحقيقية</label>
+          <textarea name="Photos" rows="3" placeholder="ضع كل رابط صورة في سطر مستقل"></textarea>
+
+          <div class="two">
+            <div>
+              <label>درجة الثقة</label>
+              <select name="Confidence_Level">
+                <option>عالية</option>
+                <option>متوسطة</option>
+                <option>منخفضة</option>
+              </select>
+            </div>
+            <div>
+              <label>حالة النشر</label>
+              <select name="Publish_Status">
+                <option>قابل للنشر</option>
+                <option>يحتاج مراجعة</option>
+                <option>داخلي فقط (تحت التدقيق)</option>
+                <option>مؤجل</option>
+              </select>
+            </div>
+          </div>
+
+          <label>ملاحظات التحقق</label>
+          <textarea name="Verification_Notes" rows="3" placeholder="ملاحظات الفريق، المصدر، أو سبب تأجيل النشر"></textarea>
+
+          <div class="formActions">
+            <button type="submit" class="primary">حفظ التعديل محلياً</button>
+            <button type="button" id="markReady">اعتماد قابل للنشر</button>
+            <button type="button" id="clearCurrentEdit" class="danger">حذف تعديل هذا الموقع</button>
+          </div>
+
+          <div id="photoPreview" class="photoPreview"></div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h2>تقييم اكتمال البطاقة</h2>
+        <ul id="qualityList" class="qualityList">
+          <li>لم يتم اختيار موقع بعد.</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <span>نسخة تشغيلية تجريبية V1 - لا تحفظ التعديلات على الخادم مباشرة. يتم الحفظ محلياً ثم تصدير GeoJSON أو Patch.</span>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

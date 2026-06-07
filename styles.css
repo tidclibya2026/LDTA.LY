@@ -1,0 +1,76 @@
+:root{
+  --navy:#0b1f3a;
+  --blue:#0f4c81;
+  --gold:#c99a3a;
+  --cream:#f7f1e3;
+  --muted:#6b7280;
+  --danger:#b42318;
+  --ok:#0f766e;
+  --warn:#b7791f;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --border:#d9dee8;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Cairo","Tajawal","Segoe UI",Arial,sans-serif;background:var(--bg);color:#172033}
+.topbar{display:flex;justify-content:space-between;gap:16px;align-items:center;background:linear-gradient(135deg,var(--navy),#123f68);color:#fff;padding:14px 18px;border-bottom:4px solid var(--gold)}
+.brand{display:flex;gap:14px;align-items:center}
+.logoMark{width:58px;height:58px;border:2px solid rgba(255,255,255,.45);border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:800;letter-spacing:1px;background:rgba(255,255,255,.08)}
+h1{font-size:22px;margin:0 0 4px}
+p{margin:0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+button,.fileBtn{border:0;border-radius:10px;padding:10px 12px;background:#fff;color:var(--navy);font-weight:700;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+button.primary{background:var(--blue);color:#fff}
+button.danger,.danger{background:var(--danger);color:#fff}
+.fileBtn{position:relative;overflow:hidden}
+.fileBtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.fileBtn.alt{background:var(--cream)}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:12px 18px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center;box-shadow:0 1px 3px rgba(16,24,40,.06)}
+.kpi span{display:block;font-size:26px;font-weight:900;color:var(--blue)}
+.kpi small{color:var(--muted);font-weight:700}
+.kpi.warn span{color:var(--warn)}
+.layout{display:grid;grid-template-columns:320px 1fr 390px;gap:12px;padding:0 18px 12px;min-height:calc(100vh - 185px)}
+.sidebar,.editor{display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;box-shadow:0 1px 3px rgba(16,24,40,.06)}
+.panel h2{font-size:17px;margin:0 0 12px;color:var(--navy)}
+label{display:block;font-weight:800;color:#2b3448;margin:10px 0 6px}
+input,select,textarea{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px;background:#fff;font-family:inherit;font-size:14px}
+textarea{resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.checkLine{display:flex;align-items:center;gap:8px;font-weight:700}
+.checkLine input{width:auto}
+#map{height:100%;min-height:650px;border-radius:18px;border:1px solid var(--border)}
+.mapPanel{min-width:0}
+.listPanel{flex:1;min-height:280px;overflow:hidden}
+.recordList{height:430px;overflow:auto;border-top:1px solid var(--border);padding-top:8px}
+.recordItem{padding:10px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;background:#fff;cursor:pointer}
+.recordItem:hover,.recordItem.active{border-color:var(--gold);background:#fffaf0}
+.recordItem b{display:block;color:var(--navy);font-size:14px}
+.recordItem small{color:var(--muted)}
+.hidden{display:none}
+.readonly{background:#f3f6fb;border:1px dashed var(--border);border-radius:12px;padding:10px;margin-bottom:8px}
+.muted{color:var(--muted);line-height:1.7}
+.formActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.photoPreview{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.photoPreview img{width:100%;height:110px;object-fit:cover;border-radius:12px;border:1px solid var(--border)}
+.qualityList{margin:0;padding:0 18px 0 0;line-height:1.9}
+.quality-ok{color:var(--ok);font-weight:800}
+.quality-warn{color:var(--warn);font-weight:800}
+.quality-bad{color:var(--danger);font-weight:800}
+.leaflet-popup-content{direction:rtl;text-align:right;font-family:"Cairo","Tajawal","Segoe UI",Arial,sans-serif}
+.popupTitle{font-weight:900;color:var(--navy);font-size:15px}
+.popupMeta{color:var(--muted);margin:4px 0}
+.popupBtn{display:inline-block;margin-top:8px;padding:7px 10px;background:var(--blue);color:#fff;border-radius:8px;text-decoration:none;cursor:pointer}
+footer{padding:10px 18px;color:var(--muted);font-size:13px}
+@media(max-width:1200px){
+  .layout{grid-template-columns:300px 1fr}
+  .editor{grid-column:1/-1}
+  #map{min-height:520px}
+}
+@media(max-width:800px){
+  .topbar{flex-direction:column;align-items:flex-start}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .layout{grid-template-columns:1fr}
+  .two{grid-template-columns:1fr}
+}
